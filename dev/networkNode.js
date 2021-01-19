@@ -191,8 +191,7 @@ app.get("/consensus", (req, res) => {
     };
     requestPromises.push(rp(requestOptions));
   });
-  Promise.all(requestPromises)
-  .then((blockchains) => {
+  Promise.all(requestPromises).then((blockchains) => {
     const currentChainLength = bitcoin.chain.length;
     let maxChainLength = currentChainLength;
     let newLongestChain = null;
@@ -223,6 +222,33 @@ app.get("/consensus", (req, res) => {
       });
     }
   });
+});
+
+app.get("/block/:blockHash", (req, res) => {
+  const blockHash = req.params.blockHash;
+  const correctBlock = bitcoin.getBlock(blockHash);
+  res.json({ block: correctBlock });
+});
+
+app.get("/transaction/:transactionId", (req, res) => {
+  const transactionId = req.params.transactionId;
+  const transactionData = bitcoin.getTransaction(transactionId);
+  res.json({
+    transaction: transactionData.transaction,
+    block: transactionData.block,
+  });
+});
+
+app.get("/address/:address", (req, res) => {
+  const address = req.params.address;
+  const addressData = bitcoin.getAddressData(address);
+  res.json({
+    addressData: addressData,
+  });
+});
+
+app.get("/block-explorer", (req, res) => {
+  res.sendFile("./block-explorer/index.html", { root: __dirname });
 });
 
 app.listen(port, () => {
