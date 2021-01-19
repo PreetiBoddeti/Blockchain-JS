@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require("express");
 var app = express();
 const bodyparser = require("body-parser");
@@ -6,12 +7,17 @@ const uuid = require("uuid").v1;
 const port = process.argv[2];
 const rp = require("request-promise");
 
+
 const nodeAddress = uuid().split("-").join("");
 
 const bitcoin = new Blockchain();
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
+
+app.get('/', (req, res) => {
+  res.send('Server is up and running.');
+});
 
 app.get("/blockchain", (req, res) => {
   //fetch the entire blockchain
