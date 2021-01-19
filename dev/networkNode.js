@@ -257,6 +257,6 @@ app.get("/block-explorer", (req, res) => {
   res.sendFile("./block-explorer/index.html", { root: __dirname });
 });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}.....`);
+app.listen(process.env.NODE_PORT, () => {
+  console.log(`Listening on port ${process.env.NODE_PORT}.....`);
 });
